@@ -601,8 +601,9 @@ export function BottomBar({
         Icon={EndIcon}
         bgColor="bg-red-150"
         onClick={() => {
-          leave();
-          setIsMeetingLeft(true);
+          // leave();
+          // setIsMeetingLeft(true);
+          window.location.reload();
         }}
         tooltip="Leave Meeting"
       />
