@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { MeetingDetailsScreen } from "../MeetingDetailsScreen";
 import { createMeeting, getToken, validateMeeting } from "../../api";
-import { CheckCircleIcon } from "@heroicons/react/outline";
+import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import SettingDialogueBox from "../SettingDialogueBox";
 import ConfirmBox from "../ConfirmBox";
 import { Constants } from "@videosdk.live/react-sdk";
@@ -300,7 +300,9 @@ export function JoiningScreen({
 
     return (
       <>
+            
         <div>
+
           <button
             ref={btnRef}
             onMouseEnter={openTooltip}
@@ -444,14 +446,12 @@ export function JoiningScreen({
                     setVideoTrack={setVideoTrack}
                     onClickStartMeeting={onClickStartMeeting}
                     onClickJoin={async (id) => {
-                      const token = await getToken();
+                      // const token = await getToken();
                       const valid = await validateMeeting({
                         roomId: id,
-                        token,
                       });
 
                       if (valid) {
-                        setToken(token);
                         setMeetingId(id);
                         if (videoTrack) {
                           videoTrack.stop();
@@ -462,9 +462,9 @@ export function JoiningScreen({
                       } else alert("Invalid Meeting Id");
                     }}
                     _handleOnCreateMeeting={async () => {
-                      const token = await getToken();
-                      const _meetingId = await createMeeting({ token });
-                      setToken(token);
+                      console.log("Creating meeting...");
+                      // const token = await getToken();
+                      const _meetingId = await createMeeting();
                       setMeetingId(_meetingId);
                       setParticipantName("");
                       return _meetingId;

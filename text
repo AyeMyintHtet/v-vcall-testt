@@ -1,12 +1,12 @@
-import colors from "tailwindcss/colors";
+const windmill = require("@windmill/react-ui/config");
+const colors = require("tailwindcss/colors");
 
-export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,jsx,ts,tsx}",
-  ],
+module.exports = windmill({
+  mode: "jit",
+  purge: ["./pages/**/*.{js,ts,jsx,tsx}", "./src/**/*.{js,ts,jsx,tsx}"],
+  darkMode: false, // or 'media' or 'class'
+  mode: "jit",
   theme: {
-    
     colors: {
       rose: colors.rose,
       fuchsia: colors.fuchsia,
@@ -102,5 +102,8 @@ export default {
       },
     },
   },
-  plugins: [],
-};
+  variants: {
+    extend: {},
+  },
+  plugins: [require("@tailwindcss/typography")],
+});

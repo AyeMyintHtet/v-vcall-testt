@@ -4,8 +4,8 @@ import {
   ClipboardIcon,
   CheckIcon,
   ChevronDownIcon,
-  DotsHorizontalIcon,
-} from "@heroicons/react/outline";
+  EllipsisHorizontalIcon,
+} from "@heroicons/react/24/outline";
 import recordingBlink from "../../static/animations/recording-blink.json";
 import useIsRecording from "../../hooks/useIsRecording";
 import RecordingIcon from "../../icons/Bottombar/RecordingIcon";
@@ -743,7 +743,7 @@ export function BottomBar({
       <MicBTN />
       <WebCamBTN />
       <RecordingBTN />
-      <OutlinedButton Icon={DotsHorizontalIcon} onClick={handleClickFAB} />
+      <OutlinedButton Icon={EllipsisHorizontalIcon} onClick={handleClickFAB} />
       <Transition appear show={Boolean(open)} as={Fragment}>
         <Dialog
           as="div"

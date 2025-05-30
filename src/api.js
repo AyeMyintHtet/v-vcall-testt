@@ -1,50 +1,63 @@
-const API_BASE_URL = "https://api.videosdk.live";
-const VIDEOSDK_TOKEN = process.env.REACT_APP_VIDEOSDK_TOKEN;
-const API_AUTH_URL = process.env.REACT_APP_AUTH_URL;
+const VIDEOSDK_API_KEY = import.meta.env.VITE_REACT_APP_VIDEOSDK_API_KEY;
+const API_AUTH_URL = import.meta.env.VITE_REACT_APP_AUTH_URL;
 
 export const getToken = async () => {
-  if (VIDEOSDK_TOKEN && API_AUTH_URL) {
-    console.error(
-      "Error: Provide only ONE PARAMETER - either Token or Auth API"
-    );
-  } else if (VIDEOSDK_TOKEN) {
-    return VIDEOSDK_TOKEN;
-  } else if (API_AUTH_URL) {
-    const res = await fetch(`${API_AUTH_URL}/get-token`, {
-      method: "GET",
+  const res = await fetch(`${API_AUTH_URL}/v2/get-token`, {
+    method: "POST",
+    headers: {
+      "X-API-KEY": VIDEOSDK_API_KEY,
+      Accept: "application/json",
+    },
+  });
+
+  const { token } = await res.json();
+  return token;
+
+};
+
+export const createMeeting = async () => {
+  try {
+    const url = `${API_AUTH_URL}/v2/rooms`;
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        Authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlrZXkiOiI0NDAyZGEyZC1jOGNiLTQ2MzQtYWIyYS03MzM4ZWE0OWRhNTYiLCJwZXJtaXNzaW9ucyI6WyJhbGxvd19qb2luIl0sImlhdCI6MTc0ODUwNDc0NywiZXhwIjoxNzY0MDU2NzQ3fQ.o7N4oHD5925gLFkeNTBjrDGM2QSRd0jIuOSemaxisW4',
+        "Content-Type": "application/json",
+      },
     });
-    const { token } = await res.json();
-    return token;
-  } else {
-    console.error("Error: ", Error("Please add a token or Auth Server URL"));
+
+    const data = await response.json();
+
+    if (!response.ok) throw new Error(data.message || "Failed to create meeting");
+
+    return data.roomId;
+  } catch (error) {
+    console.error("createMeeting error:", error.message);
+    return null;
   }
 };
 
-export const createMeeting = async ({ token }) => {
-  const url = `${API_BASE_URL}/v2/rooms`;
-  const options = {
-    method: "POST",
-    headers: { Authorization: token, "Content-Type": "application/json" },
-  };
+export const validateMeeting = async ({ roomId }) => {
+  try {
+    const url = `${API_AUTH_URL}/v2/rooms/validate/${roomId}`;
 
-  const { roomId } = await fetch(url, options)
-    .then((response) => response.json())
-    .catch((error) => console.error("error", error));
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlrZXkiOiI0NDAyZGEyZC1jOGNiLTQ2MzQtYWIyYS03MzM4ZWE0OWRhNTYiLCJwZXJtaXNzaW9ucyI6WyJhbGxvd19qb2luIl0sImlhdCI6MTc0ODUwNDc0NywiZXhwIjoxNzY0MDU2NzQ3fQ.o7N4oHD5925gLFkeNTBjrDGM2QSRd0jIuOSemaxisW4',
+        "Content-Type": "application/json",
+      },
+    });
 
-  return roomId;
+    const result = await response.json();
+
+    if (!response.ok) throw new Error(result.message || "Invalid meeting");
+
+    return result.roomId === roomId;
+  } catch (error) {
+    console.error("validateMeeting error:", error.message);
+    return false;
+  }
 };
 
-export const validateMeeting = async ({ roomId, token }) => {
-  const url = `${API_BASE_URL}/v2/rooms/validate/${roomId}`;
-
-  const options = {
-    method: "GET",
-    headers: { Authorization: token, "Content-Type": "application/json" },
-  };
-
-  const result = await fetch(url, options)
-    .then((response) => response.json()) //result will have meeting id
-    .catch((error) => console.error("error", error));
-
-  return result ? result.roomId === roomId : false;
-};
