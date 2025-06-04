@@ -285,7 +285,7 @@ export function BottomBar({
                 <Popover className="relative">
                   {({ close }) => (
                     <>
-                      <Popover.Button className="flex items-center justify-center mt-1 mr-1">
+                      <div className="flex items-center justify-center mt-1 mr-1">
                         <div
                           ref={btnRef}
                           onMouseEnter={openTooltip}
@@ -304,7 +304,7 @@ export function BottomBar({
                             />
                           </button>
                         </div>
-                      </Popover.Button>
+                      </div>
                       <Transition
                         as={Fragment}
                         enter="transition ease-out duration-200"
@@ -439,7 +439,7 @@ export function BottomBar({
                 <Popover className="relative">
                   {({ close }) => (
                     <>
-                      <Popover.Button className="flex items-center justify-center mt-1 mr-1">
+                      <div className="flex items-center justify-center mt-1 mr-1">
                         <div
                           ref={btnRef}
                           onMouseEnter={openTooltip}
@@ -458,7 +458,7 @@ export function BottomBar({
                             />
                           </button>
                         </div>
-                      </Popover.Button>
+                      </div>
                       <Transition
                         as={Fragment}
                         enter="transition ease-out duration-200"
@@ -601,7 +601,7 @@ export function BottomBar({
         Icon={EndIcon}
         bgColor="bg-red-150"
         onClick={() => {
-          // leave();
+          leave();
           // setIsMeetingLeft(true);
           window.location.reload();
         }}

@@ -6,7 +6,7 @@ import { MeetingContainer } from "./meeting/MeetingContainer";
 import { MeetingAppProvider } from "./MeetingAppContextDef";
 
 const App = () => {
-  const [token, setToken] = useState("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlrZXkiOiI0NDAyZGEyZC1jOGNiLTQ2MzQtYWIyYS03MzM4ZWE0OWRhNTYiLCJwZXJtaXNzaW9ucyI6WyJhbGxvd19qb2luIl0sImlhdCI6MTc0ODUwNDc0NywiZXhwIjoxNzY0MDU2NzQ3fQ.o7N4oHD5925gLFkeNTBjrDGM2QSRd0jIuOSemaxisW4");
+  const [token, setToken] = useState(import.meta.env.VITE_VIDEOSDK_TOKEN);
   const [meetingId, setMeetingId] = useState("");
   const [participantName, setParticipantName] = useState("");
   const [micOn, setMicOn] = useState(true);
@@ -50,9 +50,9 @@ const App = () => {
               webcamEnabled: webcamOn,
               name: participantName ? participantName : "TestUser",
               mode: meetingMode,
-              multiStream: true,
+              multiStream: false,
             }}
-            token={'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlrZXkiOiI0NDAyZGEyZC1jOGNiLTQ2MzQtYWIyYS03MzM4ZWE0OWRhNTYiLCJwZXJtaXNzaW9ucyI6WyJhbGxvd19qb2luIl0sImlhdCI6MTc0ODUwNDc0NywiZXhwIjoxNzY0MDU2NzQ3fQ.o7N4oHD5925gLFkeNTBjrDGM2QSRd0jIuOSemaxisW4'}
+            token={import.meta.env.VITE_VIDEOSDK_TOKEN}
             reinitialiseMeetingOnConfigChange={true}
             joinWithoutUserInteraction={true}
           >
@@ -92,6 +92,7 @@ const App = () => {
           setSelectedWebcam={setSelectedWebcam}
           setWebcamOn={setWebcamOn}
           onClickStartMeeting={() => {
+            console.log("Starting meeting with ID:", meetingId);
             setMeetingStarted(true);
           }}
           startMeeting={isMeetingStarted}

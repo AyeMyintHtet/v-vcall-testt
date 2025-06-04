@@ -1,19 +1,18 @@
-const VIDEOSDK_API_KEY = import.meta.env.VITE_REACT_APP_VIDEOSDK_API_KEY;
 const API_AUTH_URL = import.meta.env.VITE_REACT_APP_AUTH_URL;
 
-export const getToken = async () => {
-  const res = await fetch(`${API_AUTH_URL}/v2/get-token`, {
-    method: "POST",
-    headers: {
-      "X-API-KEY": VIDEOSDK_API_KEY,
-      Accept: "application/json",
-    },
-  });
+// export const getToken = async () => {
+//   const res = await fetch(`${API_AUTH_URL}/v2/get-token`, {
+//     method: "POST",
+//     headers: {
+//       "X-API-KEY": VIDEOSDK_API_KEY,
+//       Accept: "application/json",
+//     },
+//   });
 
-  const { token } = await res.json();
-  return token;
+//   const { token } = await res.json();
+//   return token;
 
-};
+// };
 
 export const createMeeting = async () => {
   try {
@@ -22,7 +21,7 @@ export const createMeeting = async () => {
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        Authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlrZXkiOiI0NDAyZGEyZC1jOGNiLTQ2MzQtYWIyYS03MzM4ZWE0OWRhNTYiLCJwZXJtaXNzaW9ucyI6WyJhbGxvd19qb2luIl0sImlhdCI6MTc0ODUwNDc0NywiZXhwIjoxNzY0MDU2NzQ3fQ.o7N4oHD5925gLFkeNTBjrDGM2QSRd0jIuOSemaxisW4',
+        Authorization: import.meta.env.VITE_VIDEOSDK_TOKEN,
         "Content-Type": "application/json",
       },
     });
@@ -45,7 +44,7 @@ export const validateMeeting = async ({ roomId }) => {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        Authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlrZXkiOiI0NDAyZGEyZC1jOGNiLTQ2MzQtYWIyYS03MzM4ZWE0OWRhNTYiLCJwZXJtaXNzaW9ucyI6WyJhbGxvd19qb2luIl0sImlhdCI6MTc0ODUwNDc0NywiZXhwIjoxNzY0MDU2NzQ3fQ.o7N4oHD5925gLFkeNTBjrDGM2QSRd0jIuOSemaxisW4',
+        Authorization: import.meta.env.VITE_VIDEOSDK_TOKEN,
         "Content-Type": "application/json",
       },
     });

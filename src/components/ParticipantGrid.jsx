@@ -52,6 +52,7 @@ function ParticipantGrid({ participantIds, isPresenting }) {
         {Array.from(
           { length: Math.ceil(participantIds.length / perRow) },
           (_, i) => {
+            console.log(participantIds, perRow, Math.ceil(participantIds.length / perRow),'adsflksd')
             return (
               <div
                 key={`participant-${i}`}

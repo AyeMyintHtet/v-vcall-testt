@@ -46,7 +46,7 @@ function ParticipantsViewer({ isPresenting }) {
     presenterId,
     localScreenShareOn,
   ]);
-
+  console.log('participantIds',participantIds)
   return (
     <MemoizedParticipantGrid
       participantIds={participantIds}

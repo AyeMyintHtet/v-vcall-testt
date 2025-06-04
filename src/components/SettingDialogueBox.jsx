@@ -206,6 +206,7 @@ export default function SettingDialogueBox({
                           ].map(({ value, label }) =>
                             label === "Audio" || label === "Video" ? (
                               <button
+                              key={value}
                                 className={`inline-flex items-center justify-center px-4 py-2 border ${
                                   setting === value
                                     ? "bg-blue-500 border-transparent"
@@ -228,7 +229,7 @@ export default function SettingDialogueBox({
                         <div className="w-full">
                           <div className="grid container grid-flow-col">
                             <div className="grid grid-cols-12">
-                              <div class="col-span-7">
+                              <div className="col-span-7">
                                 <div className="flex flex-col mt-6">
                                   <p className="text-sm text-left text-white font-bold">
                                     Microphone
@@ -238,7 +239,7 @@ export default function SettingDialogueBox({
                                     <Popover className="relative">
                                       {({ close }) => (
                                         <>
-                                          <Popover.Button className="flex  w-full ">
+                                          <div className="flex  w-full ">
                                             <button className="flex items-center justify-between text-white w-full border border-gray-300 rounded py-3 px-2">
                                               {selectedMicLabel
                                                 ? selectedMicLabel
@@ -250,7 +251,7 @@ export default function SettingDialogueBox({
                                                 }}
                                               />
                                             </button>
-                                          </Popover.Button>
+                                          </div>
                                           <Transition
                                             as={Fragment}
                                             enter="transition ease-out duration-200"
@@ -273,6 +274,7 @@ export default function SettingDialogueBox({
                                                             item?.kind ===
                                                               "audioinput" && (
                                                               <div
+                                                              key={`mic_${index}`}
                                                                 className={`px-3 py-1 my-1 pl-6 text-white text-left 
                                                             `}
                                                               >
@@ -325,7 +327,7 @@ export default function SettingDialogueBox({
                                 </div>
                               </div>
 
-                              <div class="col-span-5">
+                              <div className="col-span-5">
                                 <div className="p-4 relative mt-0 md:mt-10 ">
                                   <div
                                     className="flex flex-1 relative w-1/2 md:w-full h-1/2 md:h-auto overflow-hidden rounded"
@@ -356,7 +358,7 @@ export default function SettingDialogueBox({
                                     <Popover className="relative">
                                       {({ close }) => (
                                         <>
-                                          <Popover.Button className="flex  w-full ">
+                                          <div className="flex  w-full ">
                                             <button className="flex items-center justify-between text-white w-full border border-gray-300 rounded py-3 px-2">
                                               {selectedWebcamLabel
                                                 ? selectedWebcamLabel
@@ -368,7 +370,7 @@ export default function SettingDialogueBox({
                                                 }}
                                               />
                                             </button>
-                                          </Popover.Button>
+                                          </div>
                                           <Transition
                                             as={Fragment}
                                             enter="transition ease-out duration-200"
@@ -391,6 +393,7 @@ export default function SettingDialogueBox({
                                                             item?.kind ===
                                                               "videoinput" && (
                                                               <div
+                                                              key={`webcam_${index}`}
                                                                 className={`px-3 py-1 my-1 pl-6 text-white text-left 
                                                             `}
                                                               >
