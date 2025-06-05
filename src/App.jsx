@@ -48,12 +48,12 @@ const App = () => {
               meetingId,
               micEnabled: micOn,
               webcamEnabled: webcamOn,
-              name: participantName ? participantName : "TestUser",
+              name: participantName,
               mode: meetingMode,
               multiStream: false,
             }}
             token={import.meta.env.VITE_VIDEOSDK_TOKEN}
-            reinitialiseMeetingOnConfigChange={true}
+            // reinitialiseMeetingOnConfigChange={true}
             joinWithoutUserInteraction={true}
           >
             <MeetingContainer
