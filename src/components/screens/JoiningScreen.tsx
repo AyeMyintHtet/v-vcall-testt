@@ -11,6 +11,9 @@ import WebcamOnIcon from "../../icons/Bottombar/WebcamOnIcon";
 import MicOffIcon from "../../icons/MicOffIcon";
 import MicOnIcon from "../../icons/Bottombar/MicOnIcon";
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
+import { Background } from "../ui/Background";
+import { GlassCard } from "../ui/GlassCard";
+import { Logo } from "../Logo";
 
 interface JoiningScreenProps {
   participantName: string;
@@ -357,142 +360,136 @@ export function JoiningScreen({
   };
 
   return (
-    <div className="fixed inset-0">
-      <div className="overflow-y-auto flex flex-col flex-1 h-screen bg-gray-800">
-        <div className="flex flex-1 flex-col md:flex-row items-center justify-center md:m-[72px] m-16">
-          <div className="container grid  md:grid-flow-col grid-flow-row ">
-            <div className="grid grid-cols-12">
-              <div className="md:col-span-7 2xl:col-span-6 col-span-12">
-                <div className="flex items-center justify-center p-1.5 sm:p-4 lg:p-6">
-                  <div className="relative w-full md:pl-4 sm:pl-10 pl-5  md:pr-4 sm:pr-10 pr-5">
-                    <div className="w-full relative" style={{ height: "45vh" }}>
-                      <video
-                        autoPlay
-                        playsInline
-                        muted
-                        ref={videoPlayerRef}
-                        controls={false}
-                        style={{
-                          backgroundColor: "#1c1c1c",
-                        }}
-                        className={
-                          "rounded-[10px] h-full w-full object-cover flex items-center justify-center flip"
-                        }
-                      />
+    <div className="fixed inset-0 overflow-y-auto overflow-x-hidden">
+      <Background />
+      <div className="min-h-screen flex flex-col md:flex-row items-center justify-center p-4 gap-8 md:gap-16">
 
-                      {!isMobile ? (
-                        <>
-                          <div className="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center">
-                            {!webcamOn ? (
-                              <p className="text-xl xl:text-lg 2xl:text-xl text-white">
-                                {meetingMode === Constants.modes.VIEWER
-                                  ? "You are not permitted to use your microphone and camera."
-                                  : "The camera is off"}
-                              </p>
-                            ) : null}
-                          </div>
-                        </>
-                      ) : null}
+        {/* Left Section: Branding & Controls */}
+        <div className="flex flex-col items-center md:items-start w-full max-w-md gap-8 z-10 animate-fade-in">
+          <div className="flex flex-col items-center md:items-start gap-4">
+            <Logo variant="full" className="scale-125 origin-left" />
+            <div className="text-center md:text-left">
+              <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
+                Premium <span className="text-brand-500">Video</span>
+              </h1>
+              <p className="text-gray-400 mt-2 text-lg">
+                Connect with crystal clear audio and video.
+              </p>
+            </div>
+          </div>
 
-                      {settingDialogueOpen ? (
-                        <SettingDialogueBox
-                          open={settingDialogueOpen}
-                          onClose={handleClose}
-                          popupVideoPlayerRef={popupVideoPlayerRef}
-                          changeWebcam={changeWebcam}
-                          changeMic={changeMic}
-                          setting={setting}
-                          setSetting={setSetting}
-                          webcams={webcams}
-                          mics={mics}
-                          setSelectedMic={setSelectedMic}
-                          setSelectedWebcam={setSelectedWebcam}
-                          videoTrack={videoTrack}
-                          audioTrack={audioTrack}
-                        />
-                      ) : null}
+          <GlassCard className="w-full">
+            <MeetingDetailsScreen
+              participantName={participantName}
+              setParticipantName={setParticipantName}
+              videoTrack={videoTrack}
+              setVideoTrack={setVideoTrack}
+              onClickStartMeeting={onClickStartMeeting}
+              onClickJoin={async (id) => {
+                const token = await getToken();
+                const valid = await validateMeeting({
+                  roomId: id,
+                  token: token || "",
+                });
 
-                      <div className="absolute xl:bottom-6 bottom-4 left-0 right-0">
-                        <div className="container grid grid-flow-col space-x-4 items-center justify-center md:-m-2">
-                          <ButtonWithTooltip
-                            onClick={_handleToggleMic}
-                            onState={micOn}
-                            mic={true}
-                            OnIcon={MicOnIcon}
-                            OffIcon={MicOffIcon}
-                          />
-                          <ButtonWithTooltip
-                            onClick={_toggleWebcam}
-                            onState={webcamOn}
-                            mic={false}
-                            OnIcon={WebcamOnIcon}
-                            OffIcon={WebcamOffIcon}
-                          />
-                        </div>
-                      </div>
-                    </div>
+                if (valid) {
+                  setToken(token || "");
+                  setMeetingId(id);
+                  if (videoTrack) {
+                    videoTrack.stop();
+                    setVideoTrack(null);
+                  }
+                  onClickStartMeeting();
+                  setParticipantName("");
+                } else alert("Invalid Meeting Id");
+              }}
+              _handleOnCreateMeeting={async () => {
+                const token = await getToken();
+                const _meetingId = await createMeeting({ token: token || "" });
+                setToken(token || "");
+                setMeetingId(_meetingId || "");
+                setParticipantName("");
+                return _meetingId || "";
+              }}
+            />
+          </GlassCard>
+        </div>
 
-                    {!isMobile &&
-                      meetingMode === Constants.modes.CONFERENCE && (
-                        <div
-                          className="m-4 absolute md:left-12 lg:left-24 xl:left-44 md:right-12 lg:right-24 xl:right-44 rounded cursor-pointer bg-gray-700"
-                          onClick={(e) => {
-                            handleClickOpen();
-                          }}
-                        >
-                          <div className="flex flex-row items-center justify-center m-1">
-                            <button className="text-white">
-                              <CheckCircleIcon className="h-5 w-5" />
-                            </button>
-                            <p className="text-base text-white ml-1">
-                              Check your audio and video
-                            </p>
-                          </div>
-                        </div>
-                      )}
-                  </div>
+        {/* Right Section: Video Preview */}
+        <div className="w-full max-w-lg z-10 animate-slide-up">
+          <GlassCard className="p-0 overflow-hidden relative aspect-video bg-black/40 ring-1 ring-white/10 shadow-2xl">
+            <div className="w-full h-full relative group">
+              <video
+                autoPlay
+                playsInline
+                muted
+                ref={videoPlayerRef}
+                controls={false}
+                className="w-full h-full object-cover flip"
+                style={{ backgroundColor: "#1c1c1c", transform: "scaleX(-1)" }}
+              />
+
+              {!isMobile && !webcamOn && (
+                <div className="absolute inset-0 flex items-center justify-center bg-dark-800/80 backdrop-blur-sm">
+                  <p className="text-gray-400 font-medium">Camera is off</p>
                 </div>
-              </div>
-              <div className="md:col-span-5 2xl:col-span-6 col-span-12 md:relative">
-                <div className="flex flex-1 flex-col items-center justify-center xl:m-16 lg:m-6 md:mt-9 lg:mt-14 xl:mt-20 mt-3 md:absolute md:left-0 md:right-0 md:top-0 md:bottom-0">
-                  <MeetingDetailsScreen
-                    participantName={participantName}
-                    setParticipantName={setParticipantName}
-                    videoTrack={videoTrack}
-                    setVideoTrack={setVideoTrack}
-                    onClickStartMeeting={onClickStartMeeting}
-                    onClickJoin={async (id) => {
-                      const token = await getToken();
+              )}
 
-                      const valid = await validateMeeting({
-                        roomId: id,
-                        token: token || "",
-                      });
+              {/* Settings Button */}
+              {meetingMode === Constants.modes.CONFERENCE && (
+                <button
+                  className="absolute top-4 right-4 p-2 rounded-full bg-black/50 hover:bg-black/70 text-white backdrop-blur-md transition-all"
+                  onClick={handleClickOpen}
+                >
+                  <CheckCircleIcon className="h-6 w-6" />
+                </button>
+              )}
 
-                      if (valid) {
-                        setToken(token || "");
-                        setMeetingId(id);
-                        if (videoTrack) {
-                          videoTrack.stop();
-                          setVideoTrack(null);
-                        }
-                        onClickStartMeeting();
-                        setParticipantName("");
-                      } else alert("Invalid Meeting Id");
-                    }}
-                    _handleOnCreateMeeting={async () => {
-                      const token = await getToken();
-                      console.log("token", token);
-                      const _meetingId = await createMeeting({ token: token || "" });
-                      setToken(token || "");
-                      setMeetingId(_meetingId || "");
-                      setParticipantName("");
-                      return _meetingId || "";
-                    }}
+              {/* Bottom Controls */}
+              <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-4">
+                <div className="flex gap-4 p-3 rounded-2xl bg-black/50 backdrop-blur-md border border-white/10">
+                  <ButtonWithTooltip
+                    onClick={_handleToggleMic}
+                    onState={micOn}
+                    mic={true}
+                    OnIcon={MicOnIcon}
+                    OffIcon={MicOffIcon}
+                  />
+                  <ButtonWithTooltip
+                    onClick={_toggleWebcam}
+                    onState={webcamOn}
+                    mic={false}
+                    OnIcon={WebcamOnIcon}
+                    OffIcon={WebcamOffIcon}
                   />
                 </div>
               </div>
+
+              {/* Settings Dialog Modal */}
+              {settingDialogueOpen && (
+                <SettingDialogueBox
+                  open={settingDialogueOpen}
+                  onClose={handleClose}
+                  popupVideoPlayerRef={popupVideoPlayerRef}
+                  changeWebcam={changeWebcam}
+                  changeMic={changeMic}
+                  setting={setting}
+                  setSetting={setSetting}
+                  webcams={webcams}
+                  mics={mics}
+                  setSelectedMic={setSelectedMic}
+                  setSelectedWebcam={setSelectedWebcam}
+                  videoTrack={videoTrack}
+                  audioTrack={audioTrack}
+                />
+              )}
             </div>
+          </GlassCard>
+
+          <div className="mt-4 text-center">
+            <p className="text-sm text-gray-500">
+              {isMobile ? "Tap buttons to toggle" : "Check your settings before joining"}
+            </p>
           </div>
         </div>
       </div>

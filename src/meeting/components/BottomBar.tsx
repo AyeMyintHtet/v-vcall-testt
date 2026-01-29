@@ -29,6 +29,7 @@ import { Dialog, Popover, Transition } from "@headlessui/react";
 import { createPopper } from "@popperjs/core";
 import { useMeetingAppContext } from "../../MeetingAppContextDef";
 import useMediaStream from "../../hooks/useMediaStream";
+import { GlassCard } from "../../components/ui/GlassCard";
 
 interface BottomBarProps {
   bottomBarHeight: number;
@@ -846,22 +847,24 @@ export function BottomBar({
       </Transition>
     </div>
   ) : (
-    <div className="md:flex lg:px-2 xl:px-6 pb-2 px-2 hidden">
-      <MeetingIdCopyBTN />
+    <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 hidden md:block">
+      <GlassCard className="flex items-center justify-center gap-2 px-6 py-3 rounded-2xl !bg-dark-800/90 !border-white/10 shadow-2xl backdrop-blur-2xl hover:border-brand-500/30 transition-all duration-300">
+        <MeetingIdCopyBTN />
 
-      <div className="flex flex-1 items-center justify-center" ref={tollTipEl}>
-        <RecordingBTN />
-        <RaiseHandBTN isMobile={isMobile} isTab={isTab} />
-        <MicBTN />
-        <WebCamBTN />
-        <ScreenShareBTN isMobile={isMobile} isTab={isTab} />
-        <PipBTN isMobile={isMobile} isTab={isTab} />
-        <LeaveBTN />
-      </div>
-      <div className="flex items-center justify-center">
-        <ChatBTN isMobile={isMobile} isTab={isTab} />
-        <ParticipantsBTN isMobile={isMobile} isTab={isTab} />
-      </div>
+        <div className="flex items-center justify-center gap-3 mx-4 pl-4 border-l border-white/10" ref={tollTipEl}>
+          <div className="hover:-translate-y-1 transition-transform"><RecordingBTN /></div>
+          <div className="hover:-translate-y-1 transition-transform"><RaiseHandBTN isMobile={isMobile} isTab={isTab} /></div>
+          <div className="hover:-translate-y-1 transition-transform"><MicBTN /></div>
+          <div className="hover:-translate-y-1 transition-transform"><WebCamBTN /></div>
+          <div className="hover:-translate-y-1 transition-transform"><ScreenShareBTN isMobile={isMobile} isTab={isTab} /></div>
+          <div className="hover:-translate-y-1 transition-transform"><PipBTN isMobile={isMobile} isTab={isTab} /></div>
+          <div className="hover:-translate-y-1 transition-transform"><LeaveBTN /></div>
+        </div>
+        <div className="flex items-center justify-center gap-2 pl-4 border-l border-white/10">
+          <ChatBTN isMobile={isMobile} isTab={isTab} />
+          <ParticipantsBTN isMobile={isMobile} isTab={isTab} />
+        </div>
+      </GlassCard>
     </div>
   );
 }

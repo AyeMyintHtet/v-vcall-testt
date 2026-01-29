@@ -11,26 +11,26 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        lato: ["lato", "sans-serif"],
-        sans: [
-          "lato",
-          "BlinkMacSystemFont",
-          "-apple-system",
-          "Segoe UI",
-          "Roboto",
-          "Oxygen",
-          "Ubuntu",
-          "Cantarell",
-          "Fira Sans",
-          "Droid Sans",
-          "Helvetica Neue",
-          "Helvetica",
-          "Arial",
-          "sans-serif",
-        ],
-        mono: ["Source Code Pro", "Menlo", "monospace"],
+        sans: ["Outfit", "Inter", "sans-serif"],
+        mono: ["JetBrains Mono", "monospace"],
       },
       colors: {
+        brand: {
+          300: "#818cf8",
+          400: "#6366f1",
+          500: "#5568FE", // Primary
+          600: "#4f46e5",
+          700: "#4338ca",
+          glow: "rgba(85, 104, 254, 0.5)",
+        },
+        dark: {
+          900: "#050A0E", // Deepest background
+          800: "#0a0f14",
+          700: "#12171d",
+          600: "#1A1C22", // Card background
+          500: "#252A34",
+          glass: "rgba(22, 25, 30, 0.6)",
+        },
         gray: {
           100: "#FFFFFF",
           150: "#3f4046",
@@ -94,8 +94,33 @@ module.exports = {
           850: "#9E9DA6",
           900: "#373C43",
         },
-        // Mapped colors for compatibility if needed
+        // Mapped colors for compatibility
         "cool-gray": colors.gray,
+      },
+      animation: {
+        "blob": "blob 7s infinite",
+        "fade-in": "fadeIn 0.5s ease-out forwards",
+        "slide-up": "slideUp 0.5s ease-out forwards",
+        "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+      },
+      keyframes: {
+        blob: {
+          "0%": { transform: "translate(0px, 0px) scale(1)" },
+          "33%": { transform: "translate(30px, -50px) scale(1.1)" },
+          "66%": { transform: "translate(-20px, 20px) scale(0.9)" },
+          "100%": { transform: "translate(0px, 0px) scale(1)" },
+        },
+        fadeIn: {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        slideUp: {
+          "0%": { opacity: "0", transform: "translateY(20px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+      },
+      backdropBlur: {
+        xs: "2px",
       },
     },
   },

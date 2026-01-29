@@ -464,7 +464,7 @@ export function ParticipantView({ participantId }: { participantId: string }) {
       onMouseLeave={() => {
         setMouseOver(false);
       }}
-      className={`h-full w-full  bg-gray-750 relative overflow-hidden rounded-lg video-cover`}
+      className={`h-full w-full glass-light relative overflow-hidden rounded-xl border border-white/10 video-cover`}
     >
       <audio ref={micRef} autoPlay muted={isLocal} />
       {webcamOn ? (
@@ -490,9 +490,9 @@ export function ParticipantView({ participantId }: { participantId: string }) {
       ) : (
         <div className="h-full w-full flex items-center justify-center">
           <div
-            className={`z-10 flex items-center justify-center rounded-full bg-gray-800 2xl:h-[92px] h-[52px] 2xl:w-[92px] w-[52px]`}
+            className={`z-10 flex items-center justify-center rounded-full bg-gradient-to-br from-brand-500/20 to-purple-600/20 ring-1 ring-white/10 backdrop-blur-3xl 2xl:h-[92px] h-[52px] 2xl:w-[92px] w-[52px] shadow-lg shadow-brand-500/10`}
           >
-            <p className="text-2xl text-white">
+            <p className="text-2xl text-white font-bold drop-shadow-md">
               {String(displayName).charAt(0).toUpperCase()}
             </p>
           </div>

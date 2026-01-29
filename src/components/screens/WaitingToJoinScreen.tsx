@@ -3,6 +3,7 @@ import animationData from "../../../src/static/animations/join_meeting.json";
 import Lottie from "lottie-react";
 import useIsTab from "../../hooks/useIsTab";
 import useIsMobile from "../../hooks/useIsMobile";
+import { Background } from "../ui/Background";
 
 const WaitingToJoinScreen = () => {
   const waitingMessages = [
@@ -42,17 +43,9 @@ const WaitingToJoinScreen = () => {
   };
 
   return (
-    <div
-      className="bg-gray-800"
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "100vh",
-        // backgroundColor: theme.palette.darkTheme.main,
-      }}
-    >
-      <div className="flex flex-col">
+    <div className="fixed inset-0 flex items-center justify-center overflow-hidden">
+      <Background />
+      <div className="flex flex-col items-center gap-6 z-10 glass-panel p-12 rounded-2xl animate-pulse-slow">
         <div
           style={{
             height: isTab ? 200 : isMobile ? 200 : 250,
@@ -70,7 +63,7 @@ const WaitingToJoinScreen = () => {
             style={{ height: "100%", width: "100%" }}
           />
         </div>
-        <h1 className="text-white text-center font-bold mt-1 text-xl">
+        <h1 className="text-3xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
           {message.text}
         </h1>
       </div>

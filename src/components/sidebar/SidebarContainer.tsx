@@ -37,7 +37,7 @@ const SideBarTabView = ({
 
   return (
     <div
-      className="bg-gray-800"
+      className=""
       style={{
         height,
         width: sideBarContainerWidth,
@@ -49,7 +49,7 @@ const SideBarTabView = ({
     >
       <div>
         <div
-          className="bg-gray-750"
+          className="glass-panel border-l border-white/10"
           style={{
             height: height,
             borderRadius: 10,
