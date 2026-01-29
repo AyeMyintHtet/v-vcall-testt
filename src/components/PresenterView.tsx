@@ -1,5 +1,5 @@
 import { useMeeting, useParticipant } from "@videosdk.live/react-sdk";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import ReactPlayer from "react-player";
 import MicOffSmallIcon from "../icons/MicOffSmallIcon";
 import ScreenShareIcon from "../icons/ScreenShareIcon";
@@ -7,11 +7,12 @@ import SpeakerIcon from "../icons/SpeakerIcon";
 import { nameTructed } from "../utils/helper";
 import { CornerDisplayName } from "./ParticipantView";
 
-export function PresenterView({ height }) {
+export function PresenterView({ height }: { height: string | number }) {
   const mMeeting = useMeeting();
   const presenterId = mMeeting?.presenterId;
 
-  const videoPlayer = useRef();
+  const videoPlayer = useRef<ReactPlayer>(null);
+  const [mouseOver, setMouseOver] = useState(false);
 
   const {
     micOn,
@@ -22,7 +23,7 @@ export function PresenterView({ height }) {
     screenShareOn,
     displayName,
     isActiveSpeaker,
-  } = useParticipant(presenterId);
+  } = useParticipant(presenterId!);
 
   const mediaStream = useMemo(() => {
     if (screenShareOn) {
@@ -32,7 +33,7 @@ export function PresenterView({ height }) {
     }
   }, [screenShareStream, screenShareOn]);
 
-  const audioPlayer = useRef();
+  const audioPlayer = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     if (
@@ -54,15 +55,18 @@ export function PresenterView({ height }) {
         }
       });
     } else {
-      audioPlayer.current.srcObject = null;
+      if (audioPlayer.current) {
+        audioPlayer.current.srcObject = null;
+      }
     }
   }, [screenShareAudioStream, screenShareOn, isLocal]);
 
   return (
     <div
-      className={` bg-gray-750 rounded m-2 relative overflow-hidden w-full h-[${
-        height - "xl:p-6 lg:p-[52px] md:p-[26px] p-1"
-      }] `}
+      onMouseEnter={() => setMouseOver(true)}
+      onMouseLeave={() => setMouseOver(false)}
+      className={` bg-gray-750 rounded m-2 relative overflow-hidden w-full h-[${typeof height === 'number' ? height - 0 : height
+        }] `}
     >
       <audio autoPlay playsInline controls={false} ref={audioPlayer} />
       <div className={"video-contain absolute h-full w-full"}>
@@ -140,8 +144,9 @@ export function PresenterView({ height }) {
                 micOn,
                 webcamOn,
                 isPresenting: true,
-                participantId: presenterId,
+                participantId: presenterId || "",
                 isActiveSpeaker,
+                mouseOver,
               }}
             />
           </>

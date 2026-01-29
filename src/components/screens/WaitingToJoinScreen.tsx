@@ -11,7 +11,7 @@ const WaitingToJoinScreen = () => {
   ];
   const [message, setMessage] = useState(waitingMessages[0]);
 
-  const intervalRef = useRef(null);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     intervalRef.current = setInterval(() => {
@@ -23,7 +23,9 @@ const WaitingToJoinScreen = () => {
     }, 3000);
 
     return () => {
-      clearInterval(intervalRef.current);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
     };
   }, []);
 

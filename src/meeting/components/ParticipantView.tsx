@@ -27,7 +27,7 @@ function ParticipantsViewer({ isPresenting }: ParticipantsViewerProps) {
         return (
           ![...pinnedParticipants.keys()].includes(participantId) &&
           localParticipant?.id != participantId &&
-          !participants.get(participantId)?.isLocal
+          !participants.get(participantId)?.local
         );
       }
     );
